@@ -522,6 +522,13 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+-- Lua
+require('onedark').setup {
+    style = 'warmer'
+}
+require('onedark').load()
 
+vim.keymap.set({ 'n', 'i', 'v'}, '<D-Right>', '$', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'i', 'v'}, '<D-Left>', '$', { noremap = true, silent = true })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
