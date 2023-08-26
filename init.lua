@@ -197,7 +197,7 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-
+  'lukas-reineke/lsp-format.nvim',
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -528,7 +528,12 @@ require('onedark').setup {
 }
 require('onedark').load()
 
-vim.keymap.set({ 'n', 'i', 'v'}, '<D-Right>', '$', { noremap = true, silent = true })
-vim.keymap.set({ 'n', 'i', 'v'}, '<D-Left>', '$', { noremap = true, silent = true })
+require("lsp-format").setup {}
+require("lspconfig").gopls.setup { on_attach = require("lsp-format").on_attach }
+--
+-- require("lsp-format").setup {}
+-- require("lspconfig").solargraph.setup { on_attach = require("lsp-format").on_attach }
+--
+--require('lspconfig').solargraph.setup()
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
