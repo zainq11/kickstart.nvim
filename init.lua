@@ -68,7 +68,9 @@ require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
+  -- :G <git subcommand>
   'tpope/vim-fugitive',
+  -- For GBrowse to open up browser with current file in buffer
   'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
@@ -110,6 +112,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
+  -- Helps manage key bindings
   { 'folke/which-key.nvim', opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
