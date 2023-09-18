@@ -202,15 +202,15 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
   'lukas-reineke/lsp-format.nvim',
-  {
-    "m4xshen/hardtime.nvim",
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    opts = {}
-  }, -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
+  -- {
+  --   "m4xshen/hardtime.nvim",
+  --   dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+  --   opts = {}
+  -- }, -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.autoformat',
+  require 'kickstart.plugins.debug',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
@@ -444,7 +444,7 @@ end
 --  define the property 'filetypes' to the map in question.
 local servers = {
   -- clangd = {},
-  -- gopls = {},
+  gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
@@ -538,6 +538,30 @@ require('onedark').load()
 
 require("lsp-format").setup {}
 require("lspconfig").gopls.setup { on_attach = require("lsp-format").on_attach }
+
+-- Go
+local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    require('go.format').goimport()
+  end,
+  group = format_sync_grp,
+})
+
+require('go').setup()
+
+-- Line number toggle
+vim.keymap.set('n', '<leader>t', function()
+  if vim.wo.relativenumber then
+    vim.wo.relativenumber = false
+  else
+    vim.wo.relativenumber = true
+  end
+end, { desc = 'Toggle relative line numbering' })
+
+
+--
 --
 -- require("lsp-format").setup {}
 -- require("lspconfig").solargraph.setup { on_attach = require("lsp-format").on_attach }
