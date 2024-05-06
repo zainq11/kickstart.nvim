@@ -551,6 +551,7 @@ require("lspconfig").gopls.setup { on_attach = require("lsp-format").on_attach }
 
 require('go').setup()
 
+-- Custom commands
 -- Line number toggle
 vim.keymap.set('n', '<leader>t', function()
   if vim.wo.relativenumber then
@@ -560,8 +561,11 @@ vim.keymap.set('n', '<leader>t', function()
   end
 end, { desc = 'Toggle relative line numbering' })
 
+vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', { noremap = true, silent = true })
 
---
+vim.keymap.set('n', '<leader>x', ':vsplit | terminal<CR>', { noremap = true, silent = true })
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
+
 --
 -- require("lsp-format").setup {}
 -- require("lspconfig").solargraph.setup { on_attach = require("lsp-format").on_attach }
