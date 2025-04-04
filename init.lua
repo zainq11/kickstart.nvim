@@ -190,6 +190,12 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
+      {
+        "nvim-telescope/telescope-live-grep-args.nvim" ,
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = "^1.0.0",
+      },
     },
   },
 
@@ -298,6 +304,8 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+-- Enable live grep args for sending ripgrep arguments to telescope
+pcall(require('telescope').load_extension, 'live_grep_args')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -316,7 +324,9 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
+vim.keymap.set('n', '<leader>sa', require('telescope').extensions.live_grep_args.live_grep_args, { desc = '[S]earch with [A]rguments' })
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
@@ -553,6 +563,7 @@ require('go').setup()
 
 -- Custom commands
 -- Line number toggle
+vim.wo.relativenumber = true
 vim.keymap.set('n', '<leader>t', function()
   if vim.wo.relativenumber then
     vim.wo.relativenumber = false
@@ -565,6 +576,16 @@ vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', { noremap = true, silent
 
 vim.keymap.set('n', '<leader>x', ':vsplit | terminal<CR>', { noremap = true, silent = true })
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
+vim.opt.swapfile = false
+
+-- Copy file path into clipboard
+vim.keymap.set("n", "<leader>cp", function()
+  -- Get the file path relative to the current working directory (project root)
+  local relative_path = vim.fn.expand("%:.")
+  -- Copy to the system clipboard (using the '+' register)
+  vim.fn.setreg("+", relative_path)
+  print("Copied relative path: " .. relative_path)
+end, { desc = "Copy file path relative to project root" })
 
 --
 -- require("lsp-format").setup {}
@@ -573,3 +594,4 @@ vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
 --require('lspconfig').solargraph.setup()
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+require('custom.plugins.ezmarks').setup()
