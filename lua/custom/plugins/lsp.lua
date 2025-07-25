@@ -31,6 +31,10 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
+      -- Load autoformat utilities
+      local autoformat = require('kickstart.plugins.autoformat')
+      autoformat.setup_commands()
+
       -- Brief aside: **What is LSP?**
       --
       -- LSP is an initialism you've probably heard, but might not understand what it is.
@@ -63,6 +67,9 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
         callback = function(event)
+          -- Load autoformat utilities
+          local autoformat = require('kickstart.plugins.autoformat')
+          
           -- NOTE: Remember that Lua is a real programming language, and as such it is possible
           -- to define small helper and utility functions so you don't have to repeat yourself.
           --
@@ -71,6 +78,12 @@ return {
           local map = function(keys, func, desc, mode)
             mode = mode or "n"
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+          end
+
+          -- Setup autoformatting for this client
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client then
+            autoformat.setup_autoformat(client, event.buf)
           end
 
           -- Jump to the definition of the word under your cursor.
