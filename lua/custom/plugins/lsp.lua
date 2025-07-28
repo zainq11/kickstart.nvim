@@ -32,7 +32,7 @@ return {
     },
     config = function()
       -- Load autoformat utilities
-      local autoformat = require('kickstart.plugins.autoformat')
+      local autoformat = require('helper.autoformat')
       autoformat.setup_commands()
 
       -- Brief aside: **What is LSP?**
@@ -68,8 +68,8 @@ return {
         group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
         callback = function(event)
           -- Load autoformat utilities
-          local autoformat = require('kickstart.plugins.autoformat')
-          
+          local autoformat = require('helper.autoformat')
+
           -- NOTE: Remember that Lua is a real programming language, and as such it is possible
           -- to define small helper and utility functions so you don't have to repeat yourself.
           --
@@ -196,6 +196,18 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 
       -- See: https://github.com/williamboman/mason-lspconfig.nvim?tab=readme-ov-file#available-lsp-servers
+      require('lspconfig').ruby_lsp.setup({
+        init_options = {
+          formatter = 'standard',
+          linters = { 'standard' },
+          addonSettings = {
+            ["Ruby LSP Rails"] = {
+              enablePendingMigrationsPrompt = false,
+            },
+          },
+        },
+      })
+
       local servers = {
         clangd = {},
         gopls = {},
@@ -210,7 +222,7 @@ return {
         -- ts_ls = {},
         --
         sorbet = {},
-        ruby_ls = {},
+        -- ruby_ls = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
