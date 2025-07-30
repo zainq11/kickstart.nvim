@@ -28,9 +28,10 @@ vim.keymap.set('n', '<leader>cp', function()
   print('Copied relative path: ' .. relative_path)
 end, { desc = 'Copy file path relative to project root' })
 
--- NOTE: All LSP configuration has been moved to lua/custom/plugins/lsp.lua
-
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- require('custom.plugins.ezmarks').setup()
-return {}
+return {
+  { 'tpope/vim-fugitive' },
+  { 'tpope/vim-rhubarb' },
+}
